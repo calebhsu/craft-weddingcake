@@ -1,87 +1,91 @@
 <craft>
-	<parameter name="size" type="int" default="1"/>
-	<parameter name="width" type="int" default="30"/>
-	<parameter name="height" type="int" default="10"/>
-	<parameter name="tiers" type="int" default="2"/>
-	<script type="text/openjscad">
-
-		function main() {
-			var size = params.size;
-			var width = params.width;
-		    var height = params.height;
-		    var tiers = params.tiers;
-		    var cake;
-
-		    if (height < 1)
-		        height = 1;
-
-		    if (tiers < 1)
-		        tiers = 1;
-
-		    cake = union(
-		        base(),
-		        border()
-		    );
-
-		    // handles multiple tiers
-		    if (tiers > 1) {
-		    	var tierHeight, cakeNumber;
-		    	
-		        tierHeight = height;
-		        cakeNumber = cake.scale([0.7, 0.7, 0.7]);
-
-		        for (i = 0; i < tiers - 1; i++) {
-		            if (i == 0)
-		                tierHeight = height + 1;
-		            else
-		                tierHeight = tierHeight + ((height + 1) * 0.7);
-		                
-		            cake = union(cake, cakeNumber.translate([0, 0, tierHeight]));
-
-		            cakeNumber = cakeNumber.scale([0.7, 0.7, 1]);
-		        }
-		    }
-		   
-		    // assembled cake
-		    return cake.scale(size);
-
-		    // cake components
-		    function base() {
-		    	var cakeBase, fill, round;
-
-		    	// parts
-		        cakeBase = cylinder({
-		            r: width/2, 
-		            h: height
-		        });
-
-		        fill = cylinder({
-		            r: (width / 2) - 1, 
-		            h: 1
-		        }).translate([0, 0, height]);
-
-		        round = torus({
-		            ri: 1,
-		            ro: (width / 2) - 1
-		        }).translate([0, 0, height]);
-
-		        return union(cakeBase, fill, round);
-		    }
-
-		    function border() {
-		    	var b, angle;
-
-		    	// parts
-		        b = sphere(0.8).translate([0, width / 2, 0]);
-		        
-		        for (var i = 0; i < 7; i++) {
-		            angle = i * 360/7;
-		            b = union(b, b.rotateZ(angle));
-		        }
-
-		        return b;
-		    }
-		}
-
-	</script>
+    <parameter name="width" type="int" default="30"/>
+    <parameter name="height" type="int" default="10"/>
+    <parameter name="tiers" type="int" default="2"/>
+    
+    <group>
+        <!-- Base -->
+        <script type="text/openjscad">
+            function main() {
+                var size = params.size;
+                var width = params.width;
+                var height = params.height;
+                var tiers = params.tiers;
+                var cake;
+    
+                if (height < 1)
+                    height = 1;
+    
+                if (tiers < 1)
+                    tiers = 1;
+    
+                cake = base();
+    
+                // handles multiple tiers
+                if (tiers > 1) {
+                    var tierHeight, cakeNumber;
+                    
+                    tierHeight = height;
+                    cakeNumber = cake.scale([0.7, 0.7, 0.7]);
+    
+                    for (i = 0; i < tiers - 1; i++) {
+                        if (i == 0)
+                            tierHeight = height + 1;
+                        else
+                            tierHeight = tierHeight + ((height + 1) * 0.7);
+                            
+                        cake = union(cake, cakeNumber.translate([0, 0, tierHeight]));
+    
+                        cakeNumber = cakeNumber.scale([0.7, 0.7, 1]);
+                    }
+                }
+               
+                // assembled cake
+                return cake.translate([1, 1, 0]);
+    
+                // cake components
+                function base() {
+                    var cakeBase, fill, round;
+    
+                    // parts
+                    cakeBase = cylinder({
+                        r: width/2, 
+                        h: height,
+                        center: [true, true, false]
+                    });
+    
+                    fill = cylinder({
+                        r: (width / 2) - 1, 
+                        h: 1
+                    }).translate([0, 0, height]);
+    
+                    round = torus({
+                        ri: 1,
+                        ro: (width / 2) - 1
+                    }).translate([0, 0, height]);
+    
+                    return union(cakeBase, fill, round);
+                }
+            }
+        </script>
+        
+        <!-- Border -->
+        <script type="text/craftml">
+            function main(){
+                var width = params.width;
+                
+                var beads = []
+                var r = width / 2, n = 10, theta = 0
+                var delta = 2 * Math.PI / n
+                for (var i = 0; i < n; i++){                
+                    var x = r * Math.cos(theta)
+                    var y = r * Math.sin(theta)
+                    beads.push('<sphere x="' + x + '" y="' + y + '" radius="1"/>')
+                    theta = theta + delta
+                }                        
+                return beads.join('\n') 
+            }                                        
+        </script>
+    </group>
+    
 </craft>
