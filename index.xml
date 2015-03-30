@@ -1,13 +1,12 @@
 <craft>
     <parameter name="width" type="int" default="30"/>
     <parameter name="height" type="int" default="10"/>
-    <parameter name="tiers" type="int" default="2"/>
+    <parameter name="tiers" type="int" default="1"/>
     
     <group>
         <!-- Base -->
         <script type="text/openjscad">
             function main() {
-                var size = params.size;
                 var width = params.width;
                 var height = params.height;
                 var tiers = params.tiers;
@@ -18,9 +17,8 @@
     
                 if (tiers < 1)
                     tiers = 1;
-    
-                cake = base();
-    
+                
+                /*
                 // handles multiple tiers
                 if (tiers > 1) {
                     var tierHeight, cakeNumber;
@@ -39,33 +37,39 @@
                         cakeNumber = cakeNumber.scale([0.7, 0.7, 1]);
                     }
                 }
-               
-                // assembled cake
-                return cake.translate([1, 1, 0]);
-    
-                // cake components
-                function base() {
-                    var cakeBase, fill, round;
-    
-                    // parts
-                    cakeBase = cylinder({
-                        r: width/2, 
-                        h: height,
-                        center: [true, true, false]
-                    });
-    
-                    fill = cylinder({
+                */
+
+                return cylinder({
+                    r: width / 2, 
+                    h: height,
+                    center: [true, true, false]
+                }).translate([1, 1, 0]);
+            }
+        </script>
+        
+        <!-- Fill -->
+        <script type="text/openjscad">
+            function main() {
+                var width = params.width;
+                var height = params.height;
+                
+                return cylinder({
                         r: (width / 2) - 1, 
                         h: 1
-                    }).translate([0, 0, height]);
-    
-                    round = torus({
-                        ri: 1,
-                        ro: (width / 2) - 1
-                    }).translate([0, 0, height]);
-    
-                    return union(cakeBase, fill, round);
-                }
+                    }).translate([1, 1, height]);
+            }
+        </script>
+        
+        <!-- Round -->
+        <script type="text/openjscad">
+            function main() {
+                var width = params.width;
+                var height = params.height;
+            
+                return torus({
+                    ri: 1,
+                    ro: (width / 2) - 1
+                }).translate([1, 1, height]);
             }
         </script>
         
