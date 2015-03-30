@@ -1,95 +1,86 @@
 <craft>
-    <parameter name="width" type="int" default="30"/>
-    <parameter name="height" type="int" default="10"/>
     <parameter name="tiers" type="int" default="1"/>
     
-    <group>
-        <!-- Base -->
-        <script type="text/openjscad">
-            function main() {
-                var width = params.width;
-                var height = params.height;
-                var tiers = params.tiers;
-                var cake;
-    
-                if (height < 1)
-                    height = 1;
-    
-                if (tiers < 1)
-                    tiers = 1;
-                
-                /*
-                // handles multiple tiers
-                if (tiers > 1) {
-                    var tierHeight, cakeNumber;
+    <!-- Single Cake Layer -->
+    <craft name="layer">
+        <parameter name="width" type="int" default="30"/>
+        <parameter name="height" type="int" default="10"/>
+        <parameter name="beadNumber" type="int" default="10"/>
+        
+        <group>
+            <!-- Base -->
+            <script type="text/openjscad">
+                function main() {
+                    // handles minimum values
+                    if (params.height < 1) { params.height = 1; }
+        
+                    if (params.tiers < 1) { params.tiers = 1; }
                     
-                    tierHeight = height;
-                    cakeNumber = cake.scale([0.7, 0.7, 0.7]);
+                    // handles maximum values
+                    if (params.beadNumber > 70) { params.beadNumber = 70; }
     
-                    for (i = 0; i < tiers - 1; i++) {
-                        if (i == 0)
-                            tierHeight = height + 1;
-                        else
-                            tierHeight = tierHeight + ((height + 1) * 0.7);
-                            
-                        cake = union(cake, cakeNumber.translate([0, 0, tierHeight]));
-    
-                        cakeNumber = cakeNumber.scale([0.7, 0.7, 1]);
-                    }
+                    return cylinder({
+                        r: params.width / 2,
+                        h: params.height,
+                        center: [true, true, false]
+                    }).translate([1, 1, 0]);
                 }
-                */
-
-                return cylinder({
-                    r: width / 2, 
-                    h: height,
-                    center: [true, true, false]
-                }).translate([1, 1, 0]);
-            }
-        </script>
-        
-        <!-- Fill -->
-        <script type="text/openjscad">
-            function main() {
-                var width = params.width;
-                var height = params.height;
-                
-                return cylinder({
-                        r: (width / 2) - 1, 
-                        h: 1
-                    }).translate([1, 1, height]);
-            }
-        </script>
-        
-        <!-- Round -->
-        <script type="text/openjscad">
-            function main() {
-                var width = params.width;
-                var height = params.height;
+            </script>
             
-                return torus({
-                    ri: 1,
-                    ro: (width / 2) - 1
-                }).translate([1, 1, height]);
-            }
-        </script>
+            <!-- Fill -->
+            <script type="text/openjscad">
+                function main() {
+                    return cylinder({
+                            r: (params.width / 2) - 1, 
+                            h: 1
+                        }).translate([1, 1, params.height]);
+                }
+            </script>
+            
+            <!-- Round -->
+            <script type="text/openjscad">
+                function main() {
+                    return torus({
+                        ri: 1,
+                        ro: (params.width / 2) - 1
+                    }).translate([1, 1, params.height]);
+                }
+            </script>
+            
+            <!-- Border -->
+            <script type="text/craftml">
+                function main() {
+                    var beads = []
+                    var r = (params.width / 2), n = params.beadNumber, theta = 0
+                    var delta = 2 * Math.PI / n
+                    for (var i = 0; i < n; i++) {
+                        var x = r * Math.cos(theta)
+                        var y = r * Math.sin(theta)
+                        beads.push('<sphere x="' + x + '" y="' + y + '"z="0.1" radius="1"/>')
+                        theta = theta + delta
+                    }
+                    return beads.join('\n')
+                }
+            </script>
+        </group>
         
-        <!-- Border -->
-        <script type="text/craftml">
-            function main(){
-                var width = params.width;
-                
-                var beads = []
-                var r = width / 2, n = 10, theta = 0
-                var delta = 2 * Math.PI / n
-                for (var i = 0; i < n; i++){                
-                    var x = r * Math.cos(theta)
-                    var y = r * Math.sin(theta)
-                    beads.push('<sphere x="' + x + '" y="' + y + '" radius="1"/>')
-                    theta = theta + delta
-                }                        
-                return beads.join('\n') 
-            }                                        
-        </script>
-    </group>
+    </craft>
+    
+    <!-- Stacks Multiple Tiers -->
+    <script type="text/craftml">
+        function main() {
+            var tierSize;
+            var xml = '<stack>'
+
+            for (var i = 1; i < params.tiers; i++) {
+                tierSize = (1 / (params.tiers - 0.3)) * i 
+                xml += '<scale factor="' + tierSize + '">'
+                xml += '<layer></layer></scale>'
+            } 
+            xml += '<layer></layer></stack>'
+            
+            return xml
+        }
+    </script>
     
 </craft>
