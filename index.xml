@@ -1,16 +1,15 @@
 <craft>
     <parameter name="tiers" type="int" default="1"/>
     
-    <!-- Single Cake Layer -->
     <craft name="layer">
         <parameter name="width" type="int" default="30"/>
         <parameter name="height" type="int" default="10"/>
         <parameter name="beadNumber" type="int" default="10"/>
         
         <group>
-            <!-- Base -->
-            <script type="text/openjscad">
+            <script>
                 function main() {
+                    // Base
                     // handles minimum values
                     if (params.height < 1) { params.height = 1; }
         
@@ -26,30 +25,30 @@
                     }).translate([1, 1, 0]);
                 }
             </script>
-            
-            <!-- Fill -->
-            <script type="text/openjscad">
+
+            <script>
                 function main() {
+                    // Fill
                     return cylinder({
                             r: (params.width / 2) - 1, 
                             h: 1
                         }).translate([1, 1, params.height]);
                 }
             </script>
-            
-            <!-- Round -->
-            <script type="text/openjscad">
+
+            <script>
                 function main() {
+                    // Round
                     return torus({
                         ri: 1,
                         ro: (params.width / 2) - 1
                     }).translate([1, 1, params.height]);
                 }
             </script>
-            
-            <!-- Border -->
-            <script type="text/craftml">
+
+            <script>
                 function main() {
+                    // Border
                     var beads = []
                     var r = (params.width / 2), n = params.beadNumber, theta = 0
                     var delta = 2 * Math.PI / n
@@ -65,10 +64,10 @@
         </group>
         
     </craft>
-    
-    <!-- Stacks Multiple Tiers -->
-    <script type="text/craftml">
+
+    <script>
         function main() {
+            // Stacks Multiple Layers
             var tierSize;
             var xml = '<stack>'
 
