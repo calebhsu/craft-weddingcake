@@ -1,4 +1,4 @@
-<craft>
+<craft name="cake">
     <parameter name="tiers" type="int" default="1"/>
     
     <craft name="layer">
