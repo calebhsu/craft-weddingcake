@@ -3,78 +3,45 @@
     
     <craft name="layer">
         <parameter name="width" type="int" default="30"/>
-        <parameter name="height" type="int" default="10"/>
+        <parameter name="rise" type="int" default="10"/>
         <parameter name="beadNumber" type="int" default="10"/>
         
-        <group>
-            <script>
-                function main() {
-                    // Base
-                    // handles minimum values
-                    if (params.height < 1) { params.height = 1; }
-        
-                    if (params.tiers < 1) { params.tiers = 1; }
-                    
-                    // handles maximum values
-                    if (params.beadNumber > 70) { params.beadNumber = 70; }
-    
-                    return cylinder({
-                        r: params.width / 2,
-                        h: params.height,
-                        center: [true, true, false]
-                    }).translate([1, 1, 0]);
-                }
-            </script>
-
-            <script>
-                function main() {
-                    // Fill
-                    return cylinder({
-                            r: (params.width / 2) - 1, 
-                            h: 1
-                        }).translate([1, 1, params.height]);
-                }
-            </script>
-
-            <script>
-                function main() {
-                    // Round
-                    return torus({
-                        ri: 1,
-                        ro: (params.width / 2) - 1
-                    }).translate([1, 1, params.height]);
-                }
-            </script>
-
-            <script>
-                function main() {
-                    // Border
-                    var beads = []
-                    var r = (params.width / 2), n = params.beadNumber, theta = 0
-                    var delta = 2 * Math.PI / n
-                    for (var i = 0; i < n; i++) {
-                        var x = r * Math.cos(theta)
-                        var y = r * Math.sin(theta)
-                        beads.push('<sphere x="' + x + '" y="' + y + '"z="0.1" radius="1"/>')
-                        theta = theta + delta
+        <group align="x50 y50">
+            <stack spacing="-1" align="x50 y50">
+                <cylinder radius="{{(width / 2) - 1}}" height="1"></cylinder>
+                
+                <script>
+                    function main() {
+                        // Round
+                        return torus({
+                            ri: 1,
+                            ro: (params.width / 2) - 1
+                        });
                     }
-                    return beads.join('\n')
-                }
-            </script>
+                </script>
+                
+                <cylinder radius="{{width / 2}}" height="{{rise}}"></cylinder>
+            </stack>
+            
+            <circle-layout radius="{{width / 2}}">
+                <repeat n="{{beadNumber}}">
+                    <sphere radius="1"></sphere>
+                </repeat>
+            </circle-layout>
         </group>
-        
     </craft>
 
     <script>
         function main() {
             // Stacks Multiple Layers
             var tierSize;
-            var xml = '<stack>'
+            var xml = '<stack align="x50 y50">'
 
             for (var i = 1; i < params.tiers; i++) {
                 tierSize = (1 / (params.tiers - 0.3)) * i 
-                xml += '<scale factor="' + tierSize + '">'
-                xml += '<layer></layer></scale>'
+                xml += '<layer transform="scale(' 
+                    + tierSize + ',' + tierSize + ',' + tierSize 
+                    + ')"></layer>'
             } 
             xml += '<layer></layer></stack>'
             
