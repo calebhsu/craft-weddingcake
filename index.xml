@@ -1,12 +1,11 @@
 <craft name="cake">
     <parameter name="tiers" type="int" default="1"/>
+    <parameter name="width" type="int" default="30"/>
+    <parameter name="rise" type="int" default="10"/>
+    <parameter name="beadNumber" type="int" default="10"/>
     
-    <craft name="layer">
-        <parameter name="width" type="int" default="30"/>
-        <parameter name="rise" type="int" default="10"/>
-        <parameter name="beadNumber" type="int" default="10"/>
-        
-        <group align="x50 y50">
+    <part name="layer">
+        <group align="x50 y50" color="ivory">
             <stack spacing="-1" align="x50 y50">
                 <cylinder radius="{{(width / 2) - 1}}" height="1"></cylinder>
                 
@@ -23,13 +22,13 @@
                 <cylinder radius="{{width / 2}}" height="{{rise}}"></cylinder>
             </stack>
             
-            <circle-layout radius="{{width / 2}}">
+            <circle-layout radius="{{width / 2}}" color="pink">
                 <repeat n="{{beadNumber}}">
                     <sphere radius="1"></sphere>
                 </repeat>
             </circle-layout>
         </group>
-    </craft>
+    </part>
 
     <script>
         function main() {
