@@ -9,21 +9,19 @@ Parameterized cake model.
 - width: adjusts width of cake base
 - height: adjusts height of cake base
 - tiers: adjusts number of cake layers
+- beadNumber: adjusts number of decorative beads
 
 ### Example
 ```html
 <craft>
     <craft name="cake" module="calebhsu/craft-weddingcake"/>
     <craft name="candle" module="calebhsu/craft-candle"/>
-    <row>
-        <cake height="1" tiers="2"/></cake>
-        <stack>
-            <scale factor="0.3">
-                <candle height="20" width="5"></candle>
-            </scale>
-            <cake tiers="1"></cake>
+    <row spacing="1" align="y50">
+        <cake width="25" height="1"/></cake>
+        <stack align="x50 y50">
+            <candle height="20" width="5" transform="scale(0.3,0.3,0.3)"></candle>
+            <cake></cake>
         </stack>
-        <cake></cake>
     </row>
 </craft>
 ```
