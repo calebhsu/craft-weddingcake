@@ -4,9 +4,11 @@
     <parameter name="rise" type="int" default="10"/>
     <parameter name="beadNumber" type="int" default="10"/>
     
+    <craft name="circle-layout" module="circle-layout"/>
+    
     <part name="layer">
-        <group align="x50 y50" color="ivory">
-            <stack spacing="-1" align="x50 y50">
+        <g layout="centerXY()" color="ivory">
+            <stack spacing="-1">
                 <cylinder radius="{{(width / 2) - 1}}" height="1"></cylinder>
                 
                 <script>
@@ -22,19 +24,21 @@
                 <cylinder radius="{{width / 2}}" height="{{rise}}"></cylinder>
             </stack>
             
-            <circle-layout radius="{{width / 2}}" color="pink">
-                <repeat n="{{beadNumber}}">
-                    <sphere radius="1"></sphere>
-                </repeat>
-            </circle-layout>
-        </group>
+            <g color="pink">
+                <circle-layout radius="{{width / 2}}">
+                    <repeat n="{{beadNumber}}">
+                        <sphere radius="1"></sphere>
+                    </repeat>
+                </circle-layout>
+            </g>
+        </g>
     </part>
 
     <script>
         function main() {
             // Stacks Multiple Layers
             var tierSize;
-            var xml = '<stack align="x50 y50">'
+            var xml = '<stack>'
 
             for (var i = 1; i < params.tiers; i++) {
                 tierSize = (1 / (params.tiers - 0.3)) * i 
