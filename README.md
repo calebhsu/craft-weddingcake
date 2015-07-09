@@ -2,8 +2,13 @@
 
 Parameterized cake model.
 
-### Install
-    $ npm install craft-weddingcake
+### Usage
+```html
+<craft>
+    <craft name="cake" module="craft-weddingcake"/>
+    <cake></cake>
+</cake>
+```
  
 ### Parameters
 - width: adjusts width of cake base
@@ -19,7 +24,7 @@ Parameterized cake model.
     <row spacing="1">
         <cake width="25" height="1"/></cake>
         <stack>
-            <candle height="20" width="5" transform="scale(0.3,0.3,0.3)"></candle>
+            <candle height="20" width="5" t="scale(0.3,0.3,0.3)"></candle>
             <cake></cake>
         </stack>
     </row>

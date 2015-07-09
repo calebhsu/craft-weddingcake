@@ -4,12 +4,17 @@
     <parameter name="rise" type="int" default="10"/>
     <parameter name="beadNumber" type="int" default="10"/>
     
+    <style>
+        layer { color: ivory; }
+        .beads { color: pink; }
+    </style>
+    
     <craft name="circle-layout" module="circle-layout"/>
     
     <part name="layer">
-        <g layout="centerXY()" color="ivory">
+        <g layout="centerXY()">
             <stack spacing="-1">
-                <cylinder radius="{{(width / 2) - 1}}" height="1"></cylinder>
+                <cylinder radius="{{(width / 2) - 1}}" height="1"/>
                 
                 <script>
                     function main() {
@@ -21,10 +26,10 @@
                     }
                 </script>
                 
-                <cylinder radius="{{width / 2}}" height="{{rise}}"></cylinder>
+                <cylinder radius="{{width / 2}}" height="{{rise}}"/>
             </stack>
             
-            <g color="pink">
+            <g class="beads">
                 <circle-layout radius="{{width / 2}}">
                     <repeat n="{{beadNumber}}">
                         <sphere radius="1"></sphere>
