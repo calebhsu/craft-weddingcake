@@ -12,9 +12,13 @@ Parameterized cake model.
  
 ### Parameters
 - width: adjusts width of cake base
+    - default: 30
 - height: adjusts height of cake base
+    - default: 10
 - tiers: adjusts number of cake layers
+    - default: 2
 - beadNumber: adjusts number of decorative beads
+    - default: 10
 
 ### Example
 ```html
