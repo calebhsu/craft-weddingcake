@@ -22,16 +22,13 @@ Parameterized cake model.
 
 ### Example
 ```html
-<craft>
+<craft name="cake">
     <craft name="cake" module="craft-weddingcake"/>
     <craft name="candle" module="craft-candle"/>
-    <row spacing="1">
-        <cake width="25" height="1"/></cake>
-        <stack>
-            <candle height="20" width="5" t="scale(0.3 0.3 0.3)"></candle>
-            <cake></cake>
-        </stack>
-    </row>
+    <stack>
+        <candle height="20" width="5" t="scale(0.3 0.3 0.3)"></candle>
+        <cake></cake>
+    </stack>
 </craft>
 ```
 
