@@ -2,7 +2,7 @@
     <parameter name="tiers" type="int" default="2"/>
     <parameter name="width" type="int" default="30"/>
     <parameter name="height" type="int" default="10"/>
-    <parameter name="beadNumber" type="int" default="10"/>
+    <parameter name="beadNumber" type="int" default="20"/>
     
     <style>
         layer { color: ivory; }
@@ -10,6 +10,7 @@
     </style>
     
     <craft name="circle-layout" module="circle-layout"/>
+    <craft name="shrink-layout" module="grow-layout"/>
     
     <part name="layer">
         <g layout="centerXY()">
@@ -39,22 +40,12 @@
         </g>
     </part>
 
-    <script>
-        function main() {
-            // Stacks Multiple Layers
-            var tierSize;
-            var xml = '<stack>'
-
-            for (var i = 1; i < params.tiers; i++) {
-                tierSize = (1 / (params.tiers - 0.3)) * i 
-                xml += '<layer transform="scale(' 
-                    + tierSize + ',' + tierSize + ',' + tierSize 
-                    + ')"></layer>'
-            } 
-            xml += '<layer></layer></stack>'
-            
-            return xml
-        }
-    </script>
+    <g l="centerXY() lineupZ()">
+        <shrink-layout factor="0.8">
+            <repeat n={{tiers}}>
+                <layer></layer>
+            </repeat>
+        </shrink-layout>
+    </g>
     
 </craft>

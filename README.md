@@ -28,7 +28,7 @@ Parameterized cake model.
     <row spacing="1">
         <cake width="25" height="1"/></cake>
         <stack>
-            <candle height="20" width="5" t="scale(0.3,0.3,0.3)"></candle>
+            <candle height="20" width="5" t="scale(0.3 0.3 0.3)"></candle>
             <cake></cake>
         </stack>
     </row>
